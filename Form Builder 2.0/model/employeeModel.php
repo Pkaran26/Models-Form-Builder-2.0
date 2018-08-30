@@ -10,11 +10,12 @@ class Employee{
 
     private function MetaData(){
         $meta = [];
-        $meta[0] = $this->Object->integerField("id",TRUE, 10);
+        $meta[0] = $this->Object->primaryKeyField("id", 10);
         $meta[1] = $this->Object->textField("name");
         $meta[2] = $this->Object->textField("Course");
         $meta[3] = $this->Object->dateField("dob", "NOT NULL");
         $meta[4] = $this->Object->charField("grade",2);
+        $meta[5] = $this->Object->passwordField(25);
         return $meta;
     }
 }

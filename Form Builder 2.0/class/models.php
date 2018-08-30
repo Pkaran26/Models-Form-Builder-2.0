@@ -9,13 +9,12 @@ class Models{
     private $datetime = "DATETIME";
     private $password = "VARCHAR";
 
-    public function integerField($name, $is_primary=TRUE, $length="", $null="null"){
-        $str = "";
-        if($is_primary==TRUE){
-            $str = "AUTO_INCREMENT PRIMARY KEY";
-            $null = "";
-        }
-        return $name." ".$this->integer."(".$length.") ".$str." ".$null;
+    public function primaryKeyField($name, $length=""){
+        return $name." ".$this->integer."(".$length.") AUTO_INCREMENT PRIMARY KEY ";
+    }
+
+    public function integerField($name, $length="", $null="null"){
+        return $name." ".$this->integer."(".$length.") ".$null;
     }
 
     public function charField($name, $length=25, $null=null){
@@ -34,8 +33,8 @@ class Models{
         return $name." ".$this->datetime." ".$null;
     }
 
-    public function passwordField($name, $length=25, $null=null){
-        return $name." ".$this->varchar."(".$length.") ".$null;
+    public function passwordField($length=25, $null=null){
+        return "password ".$this->varchar."(".$length.") ".$null;
     }
 
     public function genMeta($meta, $tablename){

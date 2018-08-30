@@ -37,8 +37,14 @@
         }
 
         function inputs($fname, $type){
+            $str = "";
+            if($fname=="password"){
+                $str = "password";
+            }else{
+                $this->replaceDatatype($type);
+            }
             return $str = "<td>".$fname."</td>
-            <td><input type='".$this->replaceDatatype($type)."' name='".$fname."' required='required' /></td>";
+            <td><input type='".$str."' name='".$fname."' required='required' /></td>";
         }
 
         function replaceDatatype($type){
