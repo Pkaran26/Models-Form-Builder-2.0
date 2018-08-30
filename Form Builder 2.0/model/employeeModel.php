@@ -1,6 +1,6 @@
 <?php
 require_once("../class/models.php");
-
+require_once("../class/formBuilder.php");
 class Employee{
     private $Object;
     public function __construct(){

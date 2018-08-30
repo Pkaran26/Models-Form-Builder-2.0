@@ -56,7 +56,7 @@ class Models{
     private function buildSql($sql){
         $ob = new Connect();
         $x = $ob->ProcessQuery($sql,[""]);
-        echo "res : ".$x;
+      //  echo "Table Created/Updated";
     }
 }
 

@@ -4,6 +4,7 @@
         private $tableInfo="";
         private $fields = array();
         private $ob;
+        private $table="";
         private $dt = array(
             'varchar'=>'text',
             'int' => "number",
@@ -13,14 +14,15 @@
         );
         function __construct($table){
             $this->ob = new Connect();
+            $this->table = $table;
             $sql = "SELECT COLUMN_NAME, DATA_TYPE  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = ? and TABLE_SCHEMA = ? and COLUMN_NAME != 'id'";
-            $this->tableInfo = $this->ob->select_data($sql,[$table,'formbuilder']);
+            $this->tableInfo = $this->ob->select_data($sql,[$this->table,'formbuilder']);
            // print_r($this->tableInfo);
         }
 
         function generateForm(){
             $form = "<div>
-            <form action='classes/submit.php' method='post'>
+            <form action='objects/submit.php' method='post'>
             <table>";
             $x = count($this->tableInfo);
             for($i=0;$i<$x;$i++){
@@ -53,10 +55,15 @@
             }
             return $this->fields;
         }
-        function getFormData($data){
-            return $this->ob->submitData($this->fields, $data);
+        function setFormData($data){
+            $sql = "insert into ".$this->table."(";
+            $quest = "";
+            foreach($this->fields as $f){
+                $sql .= $f.", ";
+                $quest .= "?, ";
+            }
+            $sql = substr($sql,0,strlen($sql)-2).") values (".substr($quest,0,strlen($quest)-2).")";
+            return $this->ob->ProcessQuery($sql, $data);
         }
     }
-    $o = new FormBuilder('employee');
-    $o->generateForm();
 ?>
