@@ -17,7 +17,7 @@
             $this->table = $table;
             $sql = "SELECT COLUMN_NAME, DATA_TYPE  FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = ? and TABLE_SCHEMA = ? and COLUMN_NAME != 'id'";
             $this->tableInfo = $this->ob->select_data($sql,[$this->table,'formbuilder']);
-           // print_r($this->tableInfo);
+            //print_r($this->tableInfo);
         }
 
         function generateForm(){
@@ -41,7 +41,7 @@
             if($fname=="password"){
                 $str = "password";
             }else{
-                $this->replaceDatatype($type);
+                $str = $this->replaceDatatype($type);
             }
             return $str = "<td>".$fname."</td>
             <td><input type='".$str."' name='".$fname."' required='required' /></td>";
