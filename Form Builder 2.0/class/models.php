@@ -5,15 +5,19 @@ class Models{
     private $integer = "INT";
     private $char = "CHAR";
     private $varchar = "VARCHAR";
-    private $date = "DATE";
+    private $date = "TIMESTAMP";
     private $datetime = "DATETIME";
     private $password = "VARCHAR";
 
-    public function primaryKeyField($name, $length=""){
+    public function primaryKeyField($name, $length=10){
         return $name." ".$this->integer."(".$length.") AUTO_INCREMENT PRIMARY KEY ";
     }
 
-    public function integerField($name, $length="", $null="null"){
+    public function foreignKeyField($name, $tablename, $keyname, $length=10){
+        return $name." ".$this->integer."(".$length."), FOREIGN KEY (".$name.") REFERENCES ".$tablename."(".$keyname.")";
+    }
+
+    public function integerField($name, $length=10, $null="null"){
         return $name." ".$this->integer."(".$length.") ".$null;
     }
 
@@ -25,7 +29,7 @@ class Models{
         return $name." ".$this->varchar."(".$length.") ".$null;
     }
  
-    public function dateField($name, $null="DEFAULT CURRENT_DATE"){
+    public function dateField($name, $null="DEFAULT CURRENT_TIMESTAMP"){
         return $name." ".$this->date." ".$null;
     }
 
@@ -39,23 +43,27 @@ class Models{
 
     public function genMeta($meta, $tablename){
         $count = count($meta);
-        $sql = "DROP TABLE IF EXISTS ".$tablename."; CREATE TABLE ".$tablename." (";
-        for($i=0;$i<$count;$i++){
-            if($i!=($count-1)){
-                $sql .= $meta[$i].", ";
-            }else{
-                $sql .= $meta[$i]." ";
+        if($count>0){
+            $sql = "DROP TABLE IF EXISTS ".$tablename."; CREATE TABLE ".$tablename." (";
+            for($i=0;$i<$count;$i++){
+                if($i!=($count-1)){
+                    $sql .= $meta[$i].", ";
+                }else{
+                    $sql .= $meta[$i]." ";
+                }
             }
+            $sql .= ")";
+            $this->buildSql($sql);
+        }else{
+            return 0;
         }
-        $sql .= ")";
-        $this->buildSql($sql);
         //echo $sql;
     }
 
     private function buildSql($sql){
         $ob = new Connect();
         $x = $ob->ProcessQuery($sql,[""]);
-      //  echo "Table Created/Updated";
+        echo "Table Created/Updated".$x;
     }
 }
 
